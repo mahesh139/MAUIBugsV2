@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             x:Class="MAUIBugs.DrawingViewBug">
+
+    <Grid RowSpacing="10" RowDefinitions="Auto,*,Auto, Auto" Margin="10,10,10,10">
+        <Label Grid.Row="0" Text="{Binding SectionLabel}"></Label>
+        <ScrollView 
+            Grid.Row="1"
+            x:Name="svCurrentAnswers" 
+            Orientation="Vertical" 
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand"
+            ios:ScrollView.ShouldDelayContentTouches="False">
+            <Grid RowDefinitions="*">
+                <StackLayout Grid.Row="0" BindableLayout.ItemsSource="{Binding CurrentAnswers}" Orientation="Vertical">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid RowDefinitions="50,*">
+                                <Label Grid.Row="0" Text="{Binding QuestionText}"></Label>
+                                <mct:DrawingView 
+                                    Grid.Row="1"
+                                    LineColor="Black"
+                                    LineWidth="3"
+                                    BackgroundColor="AliceBlue"
+                                    IsMultiLineModeEnabled="True"
+                                    ShouldClearOnFinish="False"
+                                    HeightRequest="150"
+                                    Lines="{Binding SignatureLines}">
+                                </mct:DrawingView>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+        <Grid Grid.Row="2" RowDefinitions="50,50" ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+            <Button Grid.Column="0" Text="Section 1" Command="{Binding LoadSection1Command}"></Button>
+            <Button Grid.Column="1" Text="Section 2" Command="{Binding LoadSection2Command}"></Button>
+            <Button x:Name="pickerBug" Grid.Row="2" Grid.ColumnSpan="2" Text="Picker BUG" Clicked="pickerBug_Clicked"></Button>
+        </Grid>
+        <Label Grid.Row="3">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Bindable layout is broken in" TextColor="Red"></Span>
+                    <Span Text=" Microsoft.Maui.Controls 8.0.60 " FontAttributes="Bold" TextColor="Red"></Span>
+                    <Span Text="and later versions. The same code works fine on Microsoft.Maui.Controls 8.0.40 and before" TextColor="Red"></Span>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </Grid>
+</ContentPage>
